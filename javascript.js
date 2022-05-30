@@ -68,7 +68,7 @@ $(function(){
                 $('body').css("background-image",'url(https://cdn.statically.io/img/i.pinimg.com/originals/41/e4/9e/41e49e944ea42004632b68e85dba25c7.gif)')
                 musicaAtual = new Audio(musica4)}
             else if(idmus == "mus5"){
-                $('body').css("background-image",'url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7kWtjig5Bk4L9udbPDEdvTEMPbwT3mVGm9A&usqp=CAU)')
+                $('body').css("background-image",'url(https://cdn.dribbble.com/users/3323541/screenshots/7616640/media/17b329019ab1f90fe2b9630017b962b8.gif)')
                 musicaAtual = new Audio(musica5)}
             else if(idmus == "mus6"){
                 $('body').css("background-image",'url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7kWtjig5Bk4L9udbPDEdvTEMPbwT3mVGm9A&usqp=CAU)')
@@ -98,13 +98,13 @@ $(function(){
                 $('body').css("background-image",'url()')
                 musicaAtual = new Audio(musica14)}
             else if(idmus == "mus15"){
-                $('body').css("background-image",'url()')
+                $('body').css("background-image",'url(https://giffiles.alphacoders.com/214/214384.gif)')
                 musicaAtual = new Audio(musica15)}
             else if(idmus == "mus16"){
                 $('body').css("background-image",'url()')
                 musicaAtual = new Audio(musica16)}
             else if(idmus == "mus17"){
-                $('body').css("background-image",'url()')
+                $('body').css("background-image",'url(https://www.teahub.io/photos/full/82-824687_landscape-gif.gif)')
                 musicaAtual = new Audio(musica17)}
             else if(idmus == "mus18"){
                 $('body').css("background-image",'url()')
