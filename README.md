@@ -1,7 +1,6 @@
-# milofi
-Lofi website
-
-check it here: https://milenafs.github.io/milofi/
+# MiLofi+ 🎧🎵
+> A lofi website
+[Last release v1.0.0](https://milenafs.github.io/milofi/)
 
 <img src="/screenshots/screenshot1.png">
 <img src="/screenshots/screenshot2.png">
