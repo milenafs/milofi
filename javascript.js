@@ -2,7 +2,7 @@ $(function () {
     // Single source of truth: one entry per track, in display order.
     // To add a song, add an object here -- the card and the player are both
     // built from this list.
-    var MUSIC_DIR = "Musics/";
+    var MUSIC_DIR = "songs/";
     var EMPTY_LABEL = "nome da musica";
     var OPEN_CLASS = "open";
     var CARD_MARGIN = 10;    // px, the side margin on .flex-container > div in style.css
