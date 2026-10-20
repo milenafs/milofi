@@ -26,7 +26,7 @@ Then open <http://localhost:8000>. There is no build step: it is plain HTML, CSS
 
 ## Adding a song
 
-Drop the file in `Musics/` and add one entry to the `tracks` list at the top of `javascript.js`:
+Drop the file in `songs/` and add one entry to the `tracks` list at the top of `javascript.js`:
 
 ```js
 { title: "Epiphany", artist: "Smyang Piano", file: "music1.mp3", cover: "https://..." }
