@@ -1,12 +1,33 @@
+:root {
+    /* Fallbacks only: javascript.js sets both from the screen size on load
+       and on resize. Everything below is measured in these. */
+    --card: 140px;
+    --card-open: 300px;
+    /* Vertical margin on a card. javascript.js widens it to spread the rows
+       down the screen once the whole grid fits. */
+    --gap-y: 10px;
+    /* Width of the whole grid: javascript.js pins it to a whole number of
+       columns, so a row cannot take more cards than the height was cut for. */
+    --grid: none;
+}
+
+html {
+    min-height: 100%;
+    /* Nothing is meant to sit off to the side: the grid is cut to fit the
+       window, and the trail canvas covers it exactly. */
+    overflow-x: hidden;
+    /* The wallpaper is colour only -- no image. This dark base sits under the
+       two slow washes painted by body::before and body::after. */
+    background: linear-gradient(165deg, #1b1533 0%, #110f20 48%, #1f1733 100%);
+    background-attachment: fixed;
+}
+
 body {
     font-family: 'Josefin Sans', sans-serif;
+    overflow-x: hidden;
     text-align: center;
-    background-image: url(https://64.media.tumblr.com/3816b607ed241ea66e4f484249d74a1d/22c66cb02d564956-4c/s1280x1920/16d212eb927514d4765c6a0aaa7d8692c36278eb.gifv);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
+    background: transparent;
     color: rgb(255, 255, 255);
-    transition: .50s ease-out;
     -webkit-touch-callout: none;
     /* iOS Safari */
     -webkit-user-select: none;
@@ -20,6 +41,71 @@ body {
     user-select: none;
     /* Non-prefixed version, currently
                                     supported by Chrome, Edge, Opera and Firefox */
+}
+
+/* --- wallpaper -----------------------------------------------------------
+   Two layers of soft colour that drift at different speeds, so the mix keeps
+   changing without anything to look at. They are oversized and offset, which
+   keeps their edges off screen as they move. */
+
+body::before,
+body::after {
+    content: "";
+    position: fixed;
+    top: -25%;
+    left: -25%;
+    width: 150%;
+    height: 150%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+body::before {
+    background:
+        radial-gradient(38% 42% at 22% 26%, rgba(255, 138, 196, 0.50), transparent 70%),
+        radial-gradient(42% 46% at 80% 20%, rgba(126, 148, 255, 0.45), transparent 70%);
+    animation: wash-a 26s ease-in-out infinite alternate;
+}
+
+body::after {
+    background:
+        radial-gradient(45% 50% at 74% 80%, rgba(96, 226, 212, 0.34), transparent 72%),
+        radial-gradient(40% 44% at 24% 86%, rgba(168, 112, 255, 0.42), transparent 70%);
+    animation: wash-b 34s ease-in-out infinite alternate;
+}
+
+@keyframes wash-a {
+    from { transform: translate3d(-3%, -2%, 0) scale(1); }
+    to   { transform: translate3d(4%, 3%, 0) scale(1.14); }
+}
+
+@keyframes wash-b {
+    from { transform: translate3d(3%, 2%, 0) scale(1.1); }
+    to   { transform: translate3d(-4%, -3%, 0) scale(1); }
+}
+
+/* The trail is above the wallpaper and below the page. */
+#trail {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+header,
+#home-container {
+    position: relative;
+    z-index: 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body::before,
+    body::after {
+        animation: none;
+    }
 }
 
 ::-webkit-scrollbar {
@@ -36,26 +122,31 @@ a {
 }
 
 .flex-container {
+    max-width: var(--grid);
+    margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-
-    /*margin-left: 7.5%;
-    margin-right: 7.5%;*/
-
 }
 
 .flex-container>div {
     align-self: flex-end;
-    background-color: #f1f1f12a;
+    background-color: rgba(255, 255, 255, 0.10);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
     overflow: hidden;
-    width: 140px;
-    height: 140px;
-    margin: 10px;
+    width: var(--card);
+    height: var(--card);
+    /* javascript.js measures the side margin as CARD_MARGIN to work out how
+       many columns fit; keep the two in step. */
+    margin: var(--gap-y) 10px;
     border-radius: 5px;
-    line-height: 75px;
-    font-size: 30px;
-    transition: 0.2s ease;
+    line-height: calc(var(--card) * 0.54);
+    font-size: calc(var(--card) * 0.21);
+    /* transform carries a card that wrapped to another row; width and opacity
+       are animated from javascript.js and must not be transitioned here, or
+       they lag a further 0.2s behind. */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .flex-container>div:hover {
@@ -67,33 +158,44 @@ a {
 }
 
 img {
-    width: 120px;
-    height: 120px;
+    width: calc(var(--card) - 20px);
+    height: calc(var(--card) - 20px);
     border-radius: 5px;
     object-fit: cover;
     margin-top: 10px;
     margin-left: 10px;
     float: left;
+    cursor: pointer;
+    transition: transform 0.25s ease, filter 0.25s ease, box-shadow 0.25s ease;
 }
+
+/* Hovering anywhere on the card lifts its cover. The card itself keeps its
+   transform free: javascript.js uses that to slide a card between rows.
+   The zoom stays inside the cover's 10px margin, so nothing is clipped. */
+.flex-container>div:hover img {
+    transform: scale(1.06);
+    filter: brightness(1.12) saturate(1.1);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
 .flex-container>div>.info  {
     float: right;
-    height: 140px;
-    width: 140px;
+    height: var(--card);
+    width: var(--card);
     margin-right: 10px;
     overflow: hidden;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
-    /*box-shadow: -1px 0px 65px rgba(0, 0, 0, 0.405);
-    background-color: rgba(0, 0, 0, 0.171);*/
     text-align: center;
 }
+
 .info >p{
-    font-size: 20px;
+    font-size: calc(var(--card) * 0.143);
     margin-block-start: 0;
     margin-block-end: 0;
-    height: 45px;
-    margin-top: 25px;
-    width: 140px;
+    height: calc(var(--card) * 0.32);
+    margin-top: calc(var(--card) * 0.18);
+    width: var(--card);
     border-bottom: solid 0.5px rgb(255, 255, 255);
     overflow: hidden;
     line-height: normal;
@@ -108,6 +210,16 @@ img {
 }
 
 .btn-prev, .btn-pause,.btn-next{
-    font-size: 35px;
-    color: rgba(0, 0, 0, 0.089)smoke;
+    font-size: calc(var(--card) * 0.25);
+    color: rgba(255, 255, 255, 0.85);
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.btn-prev:hover, .btn-pause:hover, .btn-next:hover {
+    color: rgb(255, 255, 255);
+}
+
+.nome > .artist {
+    font-size: calc(var(--card) * 0.107);
 }
